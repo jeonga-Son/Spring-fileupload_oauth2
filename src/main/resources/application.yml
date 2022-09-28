@@ -18,4 +18,4 @@ spring:
     hibernate:
       ddl-auto: create
 custom:
-  genFileDirPath: C:\LikeLion\SpringBoot\?????, ?????, ????\genFile
+  genFileDirPath: C:\LikeLion\SpringBoot\fileUpload\genFile
