@@ -13,3 +13,19 @@
        
 
 * 파일업로드는 method="POST" enctype="multipart/form-data"가 필수이다. (GET X)
+
+<br>
+
+* 일반 웹브라우저
+  - GET
+  - POST
+
+<br>
+
+* POSTMAN 일종의 브라우저 (웹개발 할 때 많이 사용되는 편리한 툴)
+  - GET
+  - POST
+  - PATCH
+
+![img_2.png](img_2.png)
+![img_3.png](img_3.png)

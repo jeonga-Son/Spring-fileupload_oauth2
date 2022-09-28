@@ -2,6 +2,7 @@ package com.ll.exam.app10.app.base;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
@@ -11,7 +12,11 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.authorizeRequests().antMatchers("/**").permitAll();
+        http
+                .csrf().disable() // postman에서 업로드 할 때 csrf토큰이 없기 때문에 막히므로 개발용은 끔.
+                .authorizeRequests()
+                .antMatchers("/**")
+                .permitAll();
         return http.build();
     }
 }
