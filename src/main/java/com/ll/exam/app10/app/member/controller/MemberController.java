@@ -4,10 +4,10 @@ import com.ll.exam.app10.app.member.entity.Member;
 import com.ll.exam.app10.app.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
@@ -39,7 +39,7 @@ public class MemberController {
     }
 
     @GetMapping("/profile")
-    public String showProfile(HttpSession session) {
+    public String showProfile(HttpSession session, Model model) {
 
         // getParameter()와 getAttribute() 메소드는 HttpServletRequest 클래스 내에 있다.
         // attribute란 Servlet간 공유하는 객체이다. getAttribute()는 반환유형이 Object이다.
@@ -56,6 +56,10 @@ public class MemberController {
         if ( isLogined == false ) {
             return "redirect:/?errorMsg=Need to login!";
         }
+
+        Member loginedMember = memberService.getMemberById(loginedMemberId);
+
+        model.addAttribute("loginedMember", loginedMember);
 
         return "member/profile";
     }
