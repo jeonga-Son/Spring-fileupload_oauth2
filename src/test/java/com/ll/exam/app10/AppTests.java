@@ -1,5 +1,4 @@
 package com.ll.exam.app10;
-
 import com.ll.exam.app10.app.home.controller.HomeController;
 import com.ll.exam.app10.app.member.controller.MemberController;
 import com.ll.exam.app10.app.member.service.MemberService;
@@ -8,16 +7,23 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.web.client.RestTemplate;
 
 import javax.transaction.Transactional;
+import java.io.InputStream;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -96,4 +102,45 @@ class AppTests {
 				.andExpect(handler().methodName("showProfile"))
 				.andExpect(content().string(containsString("user4@test.com")));
 	}
+
+	@Test
+	@DisplayName("회원가입")
+	@Rollback(false)
+	void t5() throws Exception {
+		String testUploadFileUrl = "https://picsum.photos/200/300";
+		String originalFileName = "test.png";
+
+		// wget
+		// RestTemplate은 Spring에서 HTTP 통신을 RESTful 형식에 맞게 손쉬운 사용을 제공해주는 템플릿이다.
+		// HTTP 요청 후 JSON, XML, String 과 같은 응답을 받을 수 있는 템플릿
+		RestTemplate restTemplate = new RestTemplate();
+		// ResponseEntity란, httpentity를 상속받는, 결과 데이터와 HTTP 상태 코드를 직접 제어할 수 있는 클래스이다.
+		ResponseEntity<Resource> response = restTemplate.getForEntity(testUploadFileUrl, Resource.class);
+		// InputStream은 외부에서 데이터를 읽는 역할을 수행하고, OutputStream은 외부로 데이터를 출력하는 역할을 수행한다.
+		InputStream inputStream = response.getBody().getInputStream();
+
+		MockMultipartFile profileImg = new MockMultipartFile(
+				"profileImg",
+				originalFileName,
+				"img/png",
+				inputStream
+		);
+
+		// 회원가입(MVC MOCK)
+		// when
+		ResultActions resultActions = mvc.perform(
+						multipart("/member/join")
+								.file(profileImg)
+								.param("username", "user5")
+								.param("password", "1234")
+								.param("email", "user5@test.com")
+								.characterEncoding("UFT-8"))
+				.andDo(print());
+
+		// 5번 회원이 생성되어야 함, 테스트
+		// 여기 마저 구현
+
+		// 5번회원의 프로필 이미지 제거
+	}
+
 }

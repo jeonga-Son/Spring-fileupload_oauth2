@@ -41,16 +41,20 @@ public class MemberService implements UserDetailsService {
         // 이후 출력을 해 보면 UUID 값이 정상적으로 나오는 것이 보이는데
         //출력을 할 때마다 다르게 나오므로 이 값을 고유 값으로 부여해주면 된다
         // UUID는 고유 값을 만드는 것이 전부이다. (파일을 계속 덮어쓰게 되지 않도록)
-        String profileImgRelPath = "member/" + UUID.randomUUID().toString() + ".png";
-        File profileImgFile = new File(genFileDirPath + "/" + profileImgRelPath);
+        String profileImgDirName = "member";
+        String fileName = UUID.randomUUID().toString() + ".png";
+        String profileImgDirPath = genFileDirPath + "/" + profileImgDirName;
+        String profileImgFilePath = profileImgDirPath + "/" + fileName;
 
-        profileImgFile.mkdirs(); // 관련된 폴더가 혹시나 없다면 만들어준다.
+        new File(profileImgDirPath).mkdirs(); // 폴더가 혹시나 없다면 만들어준다.
 
         try {
-            profileImg.transferTo(profileImgFile);
+            profileImg.transferTo(new File(profileImgFilePath));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+        String profileImgRelPath = profileImgDirName + "/" + fileName;
 
         Member member = Member.builder()
                 .username(username)
