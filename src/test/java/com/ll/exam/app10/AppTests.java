@@ -50,7 +50,7 @@ class AppTests {
 				.andExpect(status().is2xxSuccessful())
 				.andExpect(handler().handlerType(HomeController.class)) // .perform(get("/"))를 수행하면 HomeController가 수형되는 것 검증.
 				.andExpect(handler().methodName("main"))
-				.andExpect(content().string(containsString("스프링부트-파일업로드 실습"))); // import할 때 client가 아닌 servlet으로 해야한다.
+				.andExpect(content().string(containsString("안녕"))); // import할 때 client가 아닌 servlet으로 해야한다.
 	}
 
 	@Test
