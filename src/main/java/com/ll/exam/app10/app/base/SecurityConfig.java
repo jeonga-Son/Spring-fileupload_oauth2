@@ -18,7 +18,11 @@ public class SecurityConfig {
                 .csrf().disable() // postman에서 업로드 할 때 csrf토큰이 없기 때문에 막히므로 개발용은 끔.
                 .authorizeRequests()
                 .antMatchers("/**")
-                .permitAll();
+                .permitAll()
+                .and()
+                .formLogin()
+                .loginPage("/member/login") // GET
+                .loginProcessingUrl("/member/login"); // POST
         return http.build();
     }
 
