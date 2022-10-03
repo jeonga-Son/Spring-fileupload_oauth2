@@ -14,7 +14,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.security.Principal;
 
 @Controller
@@ -50,6 +49,11 @@ public class MemberController {
         }
 
         return "redirect:/member/profile";
+    }
+
+    @GetMapping("/login")
+    public String showLogin() {
+        return "member/login";
     }
 
     @PreAuthorize("isAuthenticated()") //인증된 사용자라면 true
