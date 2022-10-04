@@ -2,6 +2,7 @@ package com.ll.exam.app10.app.member.service;
 
 import com.ll.exam.app10.app.member.entity.Member;
 import com.ll.exam.app10.app.member.repository.MemberRepository;
+import com.ll.exam.app10.util.Util;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
@@ -41,8 +42,11 @@ public class MemberService implements UserDetailsService {
         // 이후 출력을 해 보면 UUID 값이 정상적으로 나오는 것이 보이는데
         //출력을 할 때마다 다르게 나오므로 이 값을 고유 값으로 부여해주면 된다
         // UUID는 고유 값을 만드는 것이 전부이다. (파일을 계속 덮어쓰게 되지 않도록)
-        String profileImgDirName = "member";
-        String fileName = UUID.randomUUID().toString() + ".png";
+        String profileImgDirName = "member/" + Util.date.getCurrentDateFormatted("yyyy_MM_dd");
+
+        String ext = Util.file.getExt(profileImg.getOriginalFilename());
+
+        String fileName = UUID.randomUUID() + "." + ext;
         String profileImgDirPath = genFileDirPath + "/" + profileImgDirName;
         String profileImgFilePath = profileImgDirPath + "/" + fileName;
 
