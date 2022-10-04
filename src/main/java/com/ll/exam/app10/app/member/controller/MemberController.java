@@ -2,8 +2,10 @@ package com.ll.exam.app10.app.member.controller;
 
 import com.ll.exam.app10.app.member.entity.Member;
 import com.ll.exam.app10.app.member.service.MemberService;
+import com.ll.exam.app10.app.security.dto.MemberContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -62,11 +64,9 @@ public class MemberController {
     @PreAuthorize("isAuthenticated()") //인증된 사용자라면 true
     @GetMapping("/profile")
     // 보안 주체(Principal). 보안 시스템이 작동되고 있는 애플리케이션에 접근하는 유저(주체)
-    public String showProfile(Principal principal, Model model) {
+    public String showProfile(@AuthenticationPrincipal MemberContext memberContext, Model model) {
 
-        Member loginedMember = memberService.getMemberByUsername(principal.getName());
-
-        model.addAttribute("loginedMember", loginedMember);
+        model.addAttribute("memberContext", memberContext);
 
         return "member/profile";
     }
