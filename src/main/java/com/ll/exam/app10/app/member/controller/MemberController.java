@@ -64,10 +64,7 @@ public class MemberController {
     @PreAuthorize("isAuthenticated()") //인증된 사용자라면 true
     @GetMapping("/profile")
     // 보안 주체(Principal). 보안 시스템이 작동되고 있는 애플리케이션에 접근하는 유저(주체)
-    public String showProfile(@AuthenticationPrincipal MemberContext memberContext, Model model) {
-
-        model.addAttribute("memberContext", memberContext);
-
+    public String showProfile() {
         return "member/profile";
     }
 }
