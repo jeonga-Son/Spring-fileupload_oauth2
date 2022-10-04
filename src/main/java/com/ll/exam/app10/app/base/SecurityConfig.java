@@ -2,7 +2,7 @@ package com.ll.exam.app10.app.base;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -11,6 +11,12 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
+// MethodSecurity는 우리가 기존에 사용했던 SecurityConfig 설정이 적용되지 않는다.
+// MethodSecurity용 설정이 따로 필요한데 이때 사용하는것이 @EnableGlobalMethodSecurity이다.
+// securedEnabled, prePostEnabled, jsr250Enabled 3개의 옵션이 존재한다.
+// prePostEnabled는 @PreAuthorize, @PostAuthorize 애노테이션을 사용하여 인가 처리를 하고 싶을때 사용하는 옵션이다.
+// @EnableGlobalMethodSecurity(prePostEnabled = true) 는 MethodSecurityInterceptor가 컨트롤러에 들어가기 전에  작동할 수 있도록 해준다 .
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -27,6 +33,9 @@ public class SecurityConfig {
                         formLogin -> formLogin
                                 .loginPage("/member/login") // GET
                                 .loginProcessingUrl("/member/login") // POST
+                )
+                .logout(logout -> logout
+                        .logoutUrl("/member/logout")
                 );
         return http.build();
     }

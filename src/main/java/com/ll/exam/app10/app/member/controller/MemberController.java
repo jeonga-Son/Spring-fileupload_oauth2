@@ -23,11 +23,13 @@ public class MemberController {
     private final MemberService memberService;
     private final PasswordEncoder passwordEncoder;
 
+    @PreAuthorize("isAnonymous()")
     @GetMapping("/join")
     public String showJoin() {
         return "member/join";
     }
 
+    @PreAuthorize("isAnonymous()")
     @PostMapping("/join")
     // HttpServletRequest은 클라이언트의 요청과 관련된 정보와 동작을 가지고 있는 객체. (클라이언트 ip정보,쿠키,헤더,get/post로 전송한 값 가져옴)
     public String join(HttpServletRequest req, String username, String password, String email, MultipartFile profileImg) {
@@ -51,6 +53,7 @@ public class MemberController {
         return "redirect:/member/profile";
     }
 
+    @PreAuthorize("isAnonymous()")
     @GetMapping("/login")
     public String showLogin() {
         return "member/login";
