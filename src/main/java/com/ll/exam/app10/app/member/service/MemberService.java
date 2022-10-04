@@ -26,7 +26,7 @@ import java.util.UUID;
 // UserDetailsService는 Spring Security에서 유저의 정보를 가져오는 인터페이스이다.
 // extends : 부모에서 선언 / 정의를 모두하며 자식은 메소드 / 변수를 그대로 사용할 수 있음
 // implements (interface 구현) : 부모 객체는 선언만 하며 정의(내용)은 자식에서 오버라이딩 (재정의) 해서 사용해야함
-public class MemberService implements UserDetailsService {
+public class MemberService {
     @Value("${custom.genFileDirPath}")
     private String genFileDirPath;
     private final MemberRepository memberRepository;
@@ -78,17 +78,6 @@ public class MemberService implements UserDetailsService {
 
     public Member getMemberById(Long id) {
         return memberRepository.findById(id).orElse(null);
-    }
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
-        Member member = memberRepository.findByUsername(username).get();
-
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority("member"));
-
-        return new User(member.getUsername(), member.getPassword(), authorities);
     }
 
     public Member join(String username, String password, String email) {
