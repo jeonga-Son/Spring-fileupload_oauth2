@@ -35,6 +35,10 @@ public class MemberService implements UserDetailsService {
         return memberRepository.findByUsername(username).orElse(null);
     }
 
+    private String getCurrentProfileImgDirName() {
+        return "member/" + Util.date.getCurrentDateFormatted("yyyy_MM_dd");
+    }
+
     public Member join(String username, String password, String email, MultipartFile profileImg) {
         // 여기서 Rel이란 상대경로를 말한다.
         // UUID.randomUUID()로 UUID 값을 생성할 수 있는데
@@ -42,7 +46,7 @@ public class MemberService implements UserDetailsService {
         // 이후 출력을 해 보면 UUID 값이 정상적으로 나오는 것이 보이는데
         //출력을 할 때마다 다르게 나오므로 이 값을 고유 값으로 부여해주면 된다
         // UUID는 고유 값을 만드는 것이 전부이다. (파일을 계속 덮어쓰게 되지 않도록)
-        String profileImgDirName = "member/" + Util.date.getCurrentDateFormatted("yyyy_MM_dd");
+        String profileImgDirName = getCurrentProfileImgDirName();
 
         String ext = Util.file.getExt(profileImg.getOriginalFilename());
 
@@ -107,6 +111,12 @@ public class MemberService implements UserDetailsService {
         member.removeProfileImgOnStorage();  // 파일삭제
         member.setProfileImg(null);
 
+        memberRepository.save(member);
+    }
+
+    public void setProfileImgByUrl(Member member, String url) {
+        String filePath = Util.file.downloadImg(url, genFileDirPath + "/" + getCurrentProfileImgDirName() + "/" + UUID.randomUUID());
+        member.setProfileImg(getCurrentProfileImgDirName() + "/" + new File(filePath).getName());
         memberRepository.save(member);
     }
 }
