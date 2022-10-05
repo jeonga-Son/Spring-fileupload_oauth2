@@ -11,8 +11,8 @@ import javax.persistence.Entity;
 import java.io.File;
 
 @Entity
-@Getter
 @Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
