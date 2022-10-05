@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
@@ -70,12 +71,13 @@ class AppTests {
 
 	@Test
 	@DisplayName("user1로 로그인 후 프로필페이지에 접속하면 user1의 이메일이 보여야 한다.")
+	// 테스트시 Mock 유저로는 MemberContext 객체가 생성되지 않기때문에 발생하는 버그를 @WithUserDetail 로 해결
+	@WithUserDetails("user1") // 이 테스트를 진행할 때 user1 회원으로 로그인하고 테스트를 한다. (memberContext를 사용하기 때문에 변경)
 	void t3() throws Exception {
 		// mockMvc로 로그인 처리
 		ResultActions resultActions = mvc
 				.perform(
 						get("/member/profile")
-								.with(user("user1").password("1234").roles("user"))
 				)
 				.andDo(print());
 
@@ -88,12 +90,13 @@ class AppTests {
 
 	@Test
 	@DisplayName("user4로 로그인 후 프로필페이지에 접속하면 user4의 이메일이 보여야 한다.")
+	// 테스트시 Mock 유저로는 MemberContext 객체가 생성되지 않기때문에 발생하는 버그를 @WithUserDetail 로 해결
+	@WithUserDetails("user4") // 이 테스트를 진행할 때 user4 회원으로 로그인하고 테스트를 한다. (memberContext를 사용하기 때문에 변경)
 	void t4() throws Exception {
 		// mockMvc로 로그인 처리
 		ResultActions resultActions = mvc
 				.perform(
 						get("/member/profile")
-								.with(user("user4").password("1234").roles("user"))
 				)
 				.andDo(print());
 
