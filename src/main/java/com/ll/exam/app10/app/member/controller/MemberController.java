@@ -2,6 +2,7 @@ package com.ll.exam.app10.app.member.controller;
 
 import com.ll.exam.app10.app.member.entity.Member;
 import com.ll.exam.app10.app.member.service.MemberService;
+import com.ll.exam.app10.app.security.dto.MemberContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpHeaders;
@@ -29,6 +30,12 @@ import java.util.concurrent.TimeUnit;
 public class MemberController {
     private final MemberService memberService;
     private final PasswordEncoder passwordEncoder;
+
+    @PreAuthorize("isAnonymous()")
+    @GetMapping("/login")
+    public String showLogin() {
+        return "member/login";
+    }
 
     @PreAuthorize("isAnonymous()")
     @GetMapping("/join")
@@ -60,11 +67,24 @@ public class MemberController {
         return "redirect:/member/profile";
     }
 
-    @PreAuthorize("isAnonymous()")
-    @GetMapping("/login")
-    public String showLogin() {
-        return "member/login";
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/modify")
+    public String showModify() {
+        return "member/modify";
     }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/modify")
+    public String modify(@AuthenticationPrincipal MemberContext context, String email, MultipartFile profileImg) {
+        Member member = memberService.getMemberById(context.getId());
+
+        memberService.modify(member, email, profileImg);
+
+        return "redirect:/member/profile";
+    }
+
+
 
     @PreAuthorize("isAuthenticated()") //인증된 사용자라면 true
     @GetMapping("/profile")

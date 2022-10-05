@@ -40,6 +40,21 @@ public class MemberService {
     }
 
     public Member join(String username, String password, String email, MultipartFile profileImg) {
+        String profileImgRelPath = saveProfileImg(profileImg);
+
+        Member member = Member.builder()
+                .username(username)
+                .password(password)
+                .email(email)
+                .profileImg(profileImgRelPath)
+                .build();
+
+        memberRepository.save(member);
+
+        return member;
+    }
+
+    private String saveProfileImg(MultipartFile profileImg) {
         // 여기서 Rel이란 상대경로를 말한다.
         // UUID.randomUUID()로 UUID 값을 생성할 수 있는데
         //생성 시에는 UUID 형태로 가져오기 때문에 toString(); 으로 String으로 바꿔준 후 사용해주면 된다.
@@ -62,18 +77,7 @@ public class MemberService {
             throw new RuntimeException(e);
         }
 
-        String profileImgRelPath = profileImgDirName + "/" + fileName;
-
-        Member member = Member.builder()
-                .username(username)
-                .password(password)
-                .email(email)
-                .profileImg(profileImgRelPath)
-                .build();
-
-        memberRepository.save(member);
-
-        return member;
+        return profileImgDirName + "/" + fileName;
     }
 
     public Member getMemberById(Long id) {
@@ -106,6 +110,15 @@ public class MemberService {
     public void setProfileImgByUrl(Member member, String url) {
         String filePath = Util.file.downloadImg(url, genFileDirPath + "/" + getCurrentProfileImgDirName() + "/" + UUID.randomUUID());
         member.setProfileImg(getCurrentProfileImgDirName() + "/" + new File(filePath).getName());
+        memberRepository.save(member);
+    }
+
+    public void modify(Member member, String email, MultipartFile profileImg) {
+        removeProfileImg(member);
+        String profileImgRelPath = saveProfileImg(profileImg);
+
+        member.setEmail(email);
+        member.setProfileImg(profileImgRelPath);
         memberRepository.save(member);
     }
 }
