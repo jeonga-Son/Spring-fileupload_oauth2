@@ -55,6 +55,11 @@ public class MemberService {
     }
 
     private String saveProfileImg(MultipartFile profileImg) {
+
+        if ( profileImg == null || profileImg.isEmpty() ) {
+            return null;
+        }
+
         // 여기서 Rel이란 상대경로를 말한다.
         // UUID.randomUUID()로 UUID 값을 생성할 수 있는데
         //생성 시에는 UUID 형태로 가져오기 때문에 toString(); 으로 String으로 바꿔준 후 사용해주면 된다.

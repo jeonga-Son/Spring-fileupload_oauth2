@@ -45,14 +45,13 @@ public class MemberController {
 
     @PreAuthorize("isAnonymous()")
     @PostMapping("/join")
-    // HttpServletRequest은 클라이언트의 요청과 관련된 정보와 동작을 가지고 있는 객체. (클라이언트 ip정보,쿠키,헤더,get/post로 전송한 값 가져옴)
     public String join(HttpServletRequest req, String username, String password, String email, MultipartFile profileImg) {
         Member oldMember = memberService.getMemberByUsername(username);
 
-        String passwordClearText = password; // password 원문 복사를 해놔야 한다.
+        String passwordClearText = password;
         password = passwordEncoder.encode(password);
 
-        if ( oldMember != null ) {
+        if (oldMember != null) {
             return "redirect:/?errorMsg=Already done.";
         }
 
@@ -67,7 +66,6 @@ public class MemberController {
         return "redirect:/member/profile";
     }
 
-
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/modify")
     public String showModify() {
@@ -76,31 +74,34 @@ public class MemberController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/modify")
-    public String modify(@AuthenticationPrincipal MemberContext context, String email, MultipartFile profileImg) {
+    public String modify(@AuthenticationPrincipal MemberContext context, String email, MultipartFile profileImg, String profileImg__delete) {
         Member member = memberService.getMemberById(context.getId());
+
+        if ( profileImg__delete != null && profileImg__delete.equals("Y") ) {
+            memberService.removeProfileImg(member);
+        }
 
         memberService.modify(member, email, profileImg);
 
         return "redirect:/member/profile";
     }
 
-
-
-    @PreAuthorize("isAuthenticated()") //인증된 사용자라면 true
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/profile")
-    // 보안 주체(Principal). 보안 시스템이 작동되고 있는 애플리케이션에 접근하는 유저(주체)
     public String showProfile() {
         return "member/profile";
     }
 
-//    @GetMapping("/profile/img/{id}")
-//    public String showProfileImg(@PathVariable Long id) {
-//        return "redirect:" + memberService.getMemberById(id).getProfileImgUrl();
-//    }
-
     @GetMapping("/profile/img/{id}")
     public ResponseEntity<Object> showProfileImg(@PathVariable Long id) throws URISyntaxException {
-        URI redirectUri = new URI(memberService.getMemberById(id).getProfileImgUrl());
+        String profileImgUrl = memberService.getMemberById(id).getProfileImgUrl();
+
+        if ( profileImgUrl == null ) {
+            profileImgUrl = "https://via.placeholder.com/100x100.png?text=U_U";
+        }
+
+        URI redirectUri = new URI(profileImgUrl);
+
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setLocation(redirectUri);
         httpHeaders.setCacheControl(CacheControl.maxAge(60 * 60 * 1, TimeUnit.SECONDS));
