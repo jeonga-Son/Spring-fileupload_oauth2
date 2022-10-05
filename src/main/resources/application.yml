@@ -36,3 +36,6 @@ spring:
       ddl-auto: create
 custom:
   genFileDirPath: C:\LikeLion\SpringBoot\fileUpload\genFile
+logging:
+  level:
+    com.ll.exam.app10.app: debug
