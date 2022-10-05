@@ -31,3 +31,28 @@
 
 ![img_2.png](img_2.png)
 ![img_3.png](img_3.png)
+
+<hr>
+
+### <오류해결>
+
+1. 카카오로그인을 위한 의존성 추가, 설정시 오류
+![img_5.png](img_5.png)
+
+```
+Caused by: org.springframework.beans.factory.BeanCreationException: 
+Error creating bean with name 'filterChain' defined in class path resource 
+[com/ll/exam/app10/app/security/SecurityConfig.class]: Bean instantiation via factory method failed; 
+nested exception is org.springframework.beans.BeanInstantiationException: 
+Failed to instantiate [org.springframework.security.web.SecurityFilterChain]: 
+Factory method 'filterChain' threw exception; nested exception is org.springframework.beans.factory.BeanCreationException: 
+Error creating bean with name 'clientRegistrationRepository' defined in class path resource 
+[org/springframework/boot/autoconfigure/security/oauth2/client/servlet/OAuth2ClientRegistrationRepositoryConfiguration.class]: 
+Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: 
+Failed to instantiate [org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository]: 
+Factory method 'clientRegistrationRepository' threw exception; nested exception is java.lang.IllegalStateException: 
+Provider ID must be specified for client registration 'kakao'
+```
+
+<br>
+✅ 오류해결 => application.yml의 clientId에 아무거나 씀. ==> 이후 지우고 다시 실행했더니 다시 됨..?
