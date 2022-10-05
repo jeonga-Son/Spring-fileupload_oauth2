@@ -32,6 +32,9 @@
 ![img_2.png](img_2.png)
 ![img_3.png](img_3.png)
 
+
+* memberContext를 세션에 저장하는 이유는 db쿼리 많이 안날라가게 하기 위해서이다.
+
 <hr>
 
 ### <오류해결>
