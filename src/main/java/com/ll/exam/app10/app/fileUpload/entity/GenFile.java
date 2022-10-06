@@ -1,4 +1,4 @@
-package com.ll.exam.app10.app.gen.entity;
+package com.ll.exam.app10.app.fileUpload.entity;
 
 import com.ll.exam.app10.app.base.entity.BaseEntity;
 import lombok.*;
@@ -19,7 +19,7 @@ import javax.persistence.Entity;
 @ToString(callSuper = true)
 public class GenFile extends BaseEntity {
     private String relTypeCode;
-    private int relId;
+    private long relId;
     private String typeCode;
     private String type2Code;
     private String fileExtTypeCode;
