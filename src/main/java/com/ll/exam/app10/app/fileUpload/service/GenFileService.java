@@ -62,6 +62,10 @@ public class GenFileService {
 
             genFileRepository.save(genFile);
 
+            // AppConfig.GET_FILE_DIR_PATH = C:\LikeLion\SpringBoot\fileUpload\genFile
+            // fileDir = relTypeCode (=>article 폴더) + "/" + Util.date.getCurrentDateFormatted("yyyy_MM_dd") (=>생성날짜 폴더);
+            // genFile.getFileName(); = getId() (=> 파일아이디) + "." + getFileExt() (=> 파일 확장자 정보);
+            // 따라서 ex. C:\LikeLion\SpringBoot\fileUpload\genFile\article\2022_10_07 폴더에 1.jpg, 2.jpg 형태로 파일이 생성된다.
             String filePath = AppConfig.GET_FILE_DIR_PATH + "/" + fileDir + "/" + genFile.getFileName();
 
             File file = new File(filePath);
