@@ -7,16 +7,15 @@ import com.ll.exam.app10.app.base.dto.RsData;
 import com.ll.exam.app10.app.fileUpload.entity.GenFile;
 import com.ll.exam.app10.app.fileUpload.service.GenFileService;
 import com.ll.exam.app10.app.security.dto.MemberContext;
+import com.ll.exam.app10.util.Util;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartRequest;
 
@@ -41,7 +40,6 @@ public class ArticleController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/write")
-    @ResponseBody
     // @Valid는 제약조건을 달아놓은 속성에 대해 유효성 검사를 하는 어노테이션이다.
     // Controller 클래스 내의 메소드에서 DTO를 인자로 받을 때 아래와 같이 적용하곤 한다.
     // BindingResult란 BindingResult는 검증 오류가 발생할 경우 오류 내용을 보관하는 스프링 프레임워크에서 제공하는 객체다
@@ -60,6 +58,16 @@ public class ArticleController {
 
         log.debug("saveFilesRsData : " + saveFilesRsData);
 
-        return "작업중";
+        String msg = "%d번 게시물이 작성되었습니다.".formatted(article.getId());
+        msg = Util.url.encode(msg);
+        return "redirect:/article/%d?msg=%s".formatted(article.getId(), msg);
+    }
+
+    @GetMapping("/{id}")
+    public String showDetail(Model model, @PathVariable Long id) {
+        Article article = articleService.getArticleById(id);
+        model.addAttribute("article", article);
+
+        return "article/detail";
     }
 }
