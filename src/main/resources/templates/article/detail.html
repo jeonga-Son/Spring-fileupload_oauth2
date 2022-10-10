@@ -33,7 +33,12 @@
         </div>
 
         <div>
-            이미지 : [[${article.extra}]]
+<!--            [[${article.extra.genFileMap.common\_\_inBody\_\_1}]]-->
+            <img th:src="@{${article.extra.genFileMap.common\_\_inBody\_\_1.url}}" alt="">
+        </div>
+
+        <div>
+            <img th:src="@{${article.extra.genFileMap.common\_\_inBody\_\_2.url}}" alt="">
         </div>
     </div>
 </section>
