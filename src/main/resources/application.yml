@@ -6,7 +6,7 @@ spring:
       client:
         registration:
           kakao:
-            clientId:
+            clientId: dfdf
             scope: profile_nickname, profile_image, account_email
             client-name: Kakao
             authorization-grant-type: authorization_code
@@ -27,15 +27,15 @@ spring:
     restart:
       enabled: true
   datasource:
-    url: jdbc:mariadb://127.0.0.1:3306/app10?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul
+    url: jdbc:mysql://127.0.0.1:3306/app10?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul
     username: root
-    password: fjfjfj1!!
-    driver-class-name: org.mariadb.jdbc.Driver
+    password:
+    driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
       ddl-auto: create
 custom:
-  genFileDirPath: C:\LikeLion\SpringBoot\fileUpload\genFile
+  genFileDirPath: /Users/jeonga/Documents/Spring Boot/fileUpload/genFile
 logging:
   level:
     com.ll.exam.app10.app: debug
