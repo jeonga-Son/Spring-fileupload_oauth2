@@ -87,6 +87,7 @@ Provider ID must be specified for client registration 'kakao'
 ✅ 오류해결 => application.yml의 clientId에 아무거나 씀. ==> 이후 지우고 다시 실행했더니 다시 됨..?
 
 <br>
+<br>
 
 #### 2. error: attempt to recreate a file for type
 

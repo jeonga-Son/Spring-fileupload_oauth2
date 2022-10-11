@@ -23,7 +23,6 @@ import java.io.InputStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.containsString;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -35,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 // @Transactional은 여기서 실행된 것은 실제 DB에 반영이 안되도록 하는 것 이다.
 @Transactional
 //  현재의 프로파일(환경)을 지정하도록 도와주는 어노테이션이 @ActiveProfiles 이다.
-@ActiveProfiles({"base-addi", "test"})
+@ActiveProfiles("test")
 class AppTests {
 
 	@Autowired
