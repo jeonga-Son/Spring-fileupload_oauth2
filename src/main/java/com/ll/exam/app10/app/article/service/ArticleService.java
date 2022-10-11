@@ -17,7 +17,6 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class ArticleService {
     private final ArticleRepository articleRepository;
-
     private final GenFileService genFileService;
 
     private final HashTagService hashTagService;
@@ -75,5 +74,9 @@ public class ArticleService {
         articleRepository.save(article);
 
         hashTagService.applyHashTags(article, hashTagContents);
+    }
+
+    public List<Article> getArticles() {
+        return articleRepository.findAll();
     }
 }
