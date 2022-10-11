@@ -36,7 +36,12 @@ public class MemberController {
 
     @PreAuthorize("isAnonymous()")
     @GetMapping("/login")
-    public String showLogin() {
+    public String showLogin(HttpServletRequest request) {
+        String uri = request.getHeader("Referer");
+        if (uri != null && !uri.contains("/member/login")) {
+            request.getSession().setAttribute("prevPage", uri);
+        }
+
         return "member/login";
     }
 
