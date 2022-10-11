@@ -10,5 +10,5 @@ public class AppConfig {
     @Value("${custom.genFileDirPath}")
     public void setFileDirPath(String genFileDirPath) { // @Value를 setter에 붙이면 자동으로 한번 실행된다.
         GET_FILE_DIR_PATH = genFileDirPath;
-    };
+    }
 }
