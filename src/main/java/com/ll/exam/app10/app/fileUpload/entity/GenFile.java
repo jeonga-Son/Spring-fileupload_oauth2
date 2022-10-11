@@ -40,14 +40,14 @@ public class GenFile extends BaseEntity {
     }
 
     public void merge(GenFile other) {
-        relTypeCode = other.getRelTypeCode();
-        relId = other.getRelId();
-        typeCode = other.getTypeCode();
-        type2Code = other.getType2Code();
+        relTypeCode = other.getRelTypeCode(); // 어떤 게시물인지 알려줌 (ex. article 관련 글)
+        relId = other.getRelId(); // 게시물 몇번인지
+        typeCode = other.getTypeCode(); // ex. common
+        type2Code = other.getType2Code(); // ex. inBody
         fileExtTypeCode = other.getFileExtTypeCode();
         fileExtType2Code = other.getFileExtType2Code();
         fileSize = other.getFileSize();
-        fileNo = other.getFileNo();
+        fileNo = other.getFileNo(); // 본문이미지 number
         fileExt = other.getFileExt();
         fileDir = other.getFileDir();
         originFileName = other.getOriginFileName();

@@ -7,6 +7,7 @@ import com.ll.exam.app10.app.fileUpload.entity.GenFile;
 import com.ll.exam.app10.app.fileUpload.repository.GenFileRepository;
 import com.ll.exam.app10.util.Util;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class GenFileService {
     private final GenFileRepository genFileRepository;
 
@@ -93,11 +95,12 @@ public class GenFileService {
 
     @Transactional
     public GenFile save(GenFile genFile) {
+        // 저장하려고 하는 파일이 이미 존재하는지 체크하는 코드 (fileNo은 겹치면 안됨.)
         Optional<GenFile> opOldGenFile = genFileRepository.findByRelTypeCodeAndRelIdAndTypeCodeAndType2CodeAndFileNo(genFile.getRelTypeCode(), genFile.getRelId(), genFile.getTypeCode(), genFile.getType2Code(), genFile.getFileNo());
 
         if (opOldGenFile.isPresent()) {
             GenFile oldGenFile = opOldGenFile.get();
-            deleteFileFromStorage(oldGenFile);
+            deleteFileFromStorage(oldGenFile); // DB에서 지운다는 것이 아니라 실제 물리적인 파일을 지운다.
 
             oldGenFile.merge(genFile);
 
@@ -171,4 +174,41 @@ public class GenFileService {
                         LinkedHashMap::new
                 ));
     }
+
+    public void deleteFiles(Article article, Map<String, String> params) {
+        List<String> deleteFilesArgs = params.keySet()
+                .stream()
+                .filter(key -> key.startsWith("delete___"))
+                .map(key -> key.replace("delete___", ""))
+                .collect(Collectors.toList());
+
+        deleteFiles(article, deleteFilesArgs); // 내부클래스에서 외부클래스를 호출할 수 있다.
+    }
+
+    public void deleteFiles(Article article, List<String> params) {
+        String relTypeCode = "article";
+        Long relId = article.getId();
+
+        params
+                .stream()
+                .forEach(key -> {
+                    String[] keyBits = key.split("__");
+
+                    String typeCode = keyBits[0];
+                    String type2Code = keyBits[1];
+                    int fileNo = Integer.parseInt(keyBits[2]);
+
+                    Optional<GenFile> optGenFile = genFileRepository.findByRelTypeCodeAndRelIdAndTypeCodeAndType2CodeAndFileNo(relTypeCode, relId, typeCode, type2Code, fileNo);
+
+                    if (optGenFile.isPresent()) {
+                        delete(optGenFile.get());
+                    }
+                });
+    }
+
+    private void delete(GenFile genFile) {
+        deleteFileFromStorage(genFile);
+        genFileRepository.delete(genFile);
+    }
+
 }
