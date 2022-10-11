@@ -61,7 +61,6 @@ public class ArticleController {
         return "redirect:/article/%d?msg=%s".formatted(article.getId(), msg);
     }
 
-    @PreAuthorize("isAuthenticated()")
     @GetMapping("/{id}")
     public String showDetail(Model model, @PathVariable Long id) {
         Article article = articleService.getForPrintArticleById(id);

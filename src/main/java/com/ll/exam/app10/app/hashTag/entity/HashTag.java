@@ -19,8 +19,10 @@ import javax.persistence.ManyToOne;
 public class HashTag extends BaseEntity {
 
     @ManyToOne
+    @ToString.Exclude // 무한루프 막기 위해 사용.
     private Article article;
 
     @ManyToOne
+    @ToString.Exclude
     private Keyword keyword;
 }
