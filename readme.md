@@ -65,7 +65,7 @@
 
 ### <오류해결>
 
-1. 카카오로그인을 위한 의존성 추가, 설정시 오류
+#### 1. 카카오로그인을 위한 의존성 추가, 설정시 오류
 ![img_5.png](img_5.png)
 
 ```
@@ -85,3 +85,25 @@ Provider ID must be specified for client registration 'kakao'
 
 <br>
 ✅ 오류해결 => application.yml의 clientId에 아무거나 씀. ==> 이후 지우고 다시 실행했더니 다시 됨..?
+
+<br>
+
+#### 2. error: attempt to recreate a file for type
+
+✅ 오류해결
+
+- build 폴더를 삭제 후 다시 실행해본다.
+
+![img_6.png](img_6.png)
+
+- Reload All from Disk를 실행한다.
+![img_7.png](img_7.png)
+
+- Repair IDE를 실행한다.
+![img_8.png](img_8.png)
+
+- Invalidate Caches를 실행한다.
+![img_9.png](img_9.png)
+![img_10.png](img_10.png)
+
+- 그래도 안되면 다시 클론받아서 진행한다.
