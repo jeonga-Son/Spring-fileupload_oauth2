@@ -108,3 +108,23 @@ Provider ID must be specified for client registration 'kakao'
 ![img_10.png](img_10.png)
 
 - 그래도 안되면 다시 클론받아서 진행한다.
+
+<br>
+<br>
+
+#### 3. 특정 포트를 점유하고 있는 프로세스가 있어 오류 발생
+✅ 오류해결 => 특정 포트를 점유하고 있는 프로세스 끄는 윈도우 cmd 명령어
+
+<br>
+
+```
+netstat -a -o | findstr 8010
+
+8010 포트를 사용하는 네트워크 작업들 표시
+
+해당 프로세스 번호 확인
+
+taskkill /f /pid {프로세스번호}
+
+EX : taskkill /f /pid 27208```
+
