@@ -45,10 +45,7 @@ public class ArticleController {
     // @Valid는 제약조건을 달아놓은 속성에 대해 유효성 검사를 하는 어노테이션이다.
     // Controller 클래스 내의 메소드에서 DTO를 인자로 받을 때 아래와 같이 적용하곤 한다.
     // BindingResult란 BindingResult는 검증 오류가 발생할 경우 오류 내용을 보관하는 스프링 프레임워크에서 제공하는 객체다
-    public String write(@AuthenticationPrincipal MemberContext memberContext, @Valid ArticleForm articleForm, MultipartRequest multipartRequest, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return "article/write";
-        }
+    public String write(@AuthenticationPrincipal MemberContext memberContext, @Valid ArticleForm articleForm, MultipartRequest multipartRequest) {
 
         Map<String, MultipartFile> fileMap = multipartRequest.getFileMap();
 
@@ -90,13 +87,18 @@ public class ArticleController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/{id}/modify")
-    public String modify(@AuthenticationPrincipal MemberContext memberContext, Model model, @PathVariable Long id, @Valid ArticleForm articleForm) {
+    @ResponseBody
+    public String modify(@AuthenticationPrincipal MemberContext memberContext, Model model, @PathVariable Long id, @Valid ArticleForm articleForm, MultipartRequest multipartRequest) {
 
         Article article = articleService.getForPrintArticleById(id);
 
         if (memberContext.memberIsNot(article.getAuthor())) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }
+
+        Map<String, MultipartFile> fileMap = multipartRequest.getFileMap();
+
+        RsData<Map<String, GenFile>> saveFilesRsData = genFileService.saveFiles(article, fileMap);
 
         articleService.modify(article, articleForm.getSubject(), articleForm.getContent());
 
