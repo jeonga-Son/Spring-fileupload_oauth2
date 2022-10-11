@@ -26,11 +26,15 @@ public class ArticleService {
         return write(new Member(authorId), subject, content);
     }
 
+    public Article write(Long authorId, String subject, String content, String hashTagContents) {
+        return write(new Member(authorId), subject, content, hashTagContents);
+    }
+
     public Article write(Member author, String subject, String content) {
         return write(author, subject, content, "");
     }
 
-    public Article write(Member author, String subject, String content, String hashTagsStr) {
+    public Article write(Member author, String subject, String content, String hashTagContents) {
         Article article = Article
                 .builder()
                 .author(author)
@@ -40,7 +44,7 @@ public class ArticleService {
 
         articleRepository.save(article);
 
-        hashTagService.applyHashTags(article, hashTagsStr);
+        hashTagService.applyHashTags(article, hashTagContents);
 
         return article;
     }

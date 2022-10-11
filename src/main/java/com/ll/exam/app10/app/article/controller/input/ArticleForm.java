@@ -14,4 +14,6 @@ public class ArticleForm {
 
     @NotEmpty
     private String content;
+
+    private String hashTagContents;
 }
