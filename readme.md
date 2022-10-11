@@ -9,10 +9,13 @@
 * GenFile 하나로 모든 파일정보를 다룬다.
 ![img_1.png](img_1.png)
 
+<br>
+
 * 파일을 보내는 방법
     - 한번에 다 보내는 방법
     - 2번에 나눠 보내는 방법:  1) 파일들부터 모두 업로드  2) 응답(번호, 번호) ,  3) 폼에 집어넣음 4) 폼 발송(파일들을 빼고 업로드)
        
+<br>
 
 * 파일업로드는 method="POST" enctype="multipart/form-data"가 필수이다. (GET X)
 
@@ -29,7 +32,12 @@
   - POST
   - PATCH
 
+<br>
+
 ![img_2.png](img_2.png)
+
+<br>
+
 ![img_3.png](img_3.png)
 
 
@@ -40,6 +48,20 @@
 * 알려야 하는 정보가 2개 이상이면 ➡️RsData를 사용하는 케이스. (ex. 성공, 실패, 메세지)
 
 <br>
+
+* 개발, 테스트, 운영환경에 맞게 설정파일 구조화
+  - 개발환경
+    - application.yml
+    - application-base-addi.yml
+    - application-dev.yml
+  - 테스트환경
+    - application.yml
+    - application-base-addi.yml
+    - application.test.yml
+  - 운영환경
+    - application.yml
+    - application-base-addi.yml
+    - application-prod.yml
 
 ### <오류해결>
 
